@@ -801,7 +801,8 @@ const InfoStep = (props: {
                         rules={[{ required: true, message: 'Missing value' }]}
                         hasFeedback
                       >
-V                      </Form.Item>
+                        <Input placeholder="Value" />
+                      </Form.Item>
                       <Form.Item name={[name, 'display_type']} hasFeedback>
                         <Input placeholder="display_type (Optional)" />
                       </Form.Item>
