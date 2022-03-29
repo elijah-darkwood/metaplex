@@ -794,15 +794,14 @@ const InfoStep = (props: {
                   {fields.map(({ key, name }) => (
                     <Space key={key} align="baseline">
                       <Form.Item name={[name, 'trait_type']} hasFeedback>
-                        <Input placeholder="trait_type (Optional)" />
+                        <Input placeholder="Trait Name (Optional)" />
                       </Form.Item>
                       <Form.Item
                         name={[name, 'value']}
                         rules={[{ required: true, message: 'Missing value' }]}
                         hasFeedback
                       >
-                        <Input placeholder="value" />
-                      </Form.Item>
+V                      </Form.Item>
                       <Form.Item name={[name, 'display_type']} hasFeedback>
                         <Input placeholder="display_type (Optional)" />
                       </Form.Item>
