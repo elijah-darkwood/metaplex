@@ -722,6 +722,22 @@ const InfoStep = (props: {
             />
           </label>
           <label className="action-field">
+            <span className="field-title">Collection</span>
+            <Input
+              className="input"
+              placeholder="Max 50 characters"
+              maxLength={50}
+              allowClear
+              value={props.attributes.collection}
+              onChange={info =>
+                props.setAttributes({
+                  ...props.attributes,
+                  collection: info.target.value,
+                })
+              }
+            />
+          </label>
+          <label className="action-field">
             <span className="field-title">External URL</span>
             <Input
               className="input"
@@ -737,7 +753,7 @@ const InfoStep = (props: {
               }
             />
           </label>
-          <label className="action-field direction-row">
+          {/* <label className="action-field direction-row">
             <Checkbox
               checked={isCollection}
               onChange={val => {
@@ -762,7 +778,7 @@ const InfoStep = (props: {
                 Select NFT
               </ArtSelector>
             </label>
-          )}
+          )} */}
           <label className="action-field">
             <span className="field-title">Description</span>
             <Input.TextArea
