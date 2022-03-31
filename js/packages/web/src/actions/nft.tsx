@@ -89,7 +89,9 @@ export const mintNFT = async (
     properties: any;
     creators: Creator[] | null;
     sellerFeeBasisPoints: number;
-    collection?: string;
+    collection: any;
+    collection_name: string;
+    collection_family: string;
     uses?: Uses;
   },
   progressCallback: Dispatch<SetStateAction<number>>,
@@ -117,10 +119,14 @@ export const mintNFT = async (
         };
       }),
     },
-    collection: metadata.collection
-      ? new PublicKey(metadata.collection).toBase58()
-      : null,
-    use: metadata.uses ? metadata.uses : null,
+    collection: {
+      name: metadata.collection_name,
+      family: metadata.collection_family,
+    },
+    // collection: metadata.collection
+    //   ? new PublicKey(metadata.collection).toBase58()
+    //   : null,
+    // use: metadata.uses ? metadata.uses : null,
   };
 
   const realFiles: File[] = [

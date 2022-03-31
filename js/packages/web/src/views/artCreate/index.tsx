@@ -77,7 +77,11 @@ export const ArtCreateView = () => {
   const [attributes, setAttributes] = useState<IMetadataExtension>({
     name: '',
     symbol: '',
-    collection: '',
+    // collection: '',
+    collection: {
+      collection_name: '',
+      collection_family: '',
+    },
     description: '',
     external_url: '',
     image: '',
@@ -110,7 +114,11 @@ export const ArtCreateView = () => {
       name: attributes.name,
       symbol: attributes.symbol,
       creators: attributes.creators,
-      collection: attributes.collection,
+      // collection: attributes.collection,
+      collection: {
+        name: attributes.collection.collection_name,
+        family: attributes.collection.collection_family,
+      },
       description: attributes.description,
       sellerFeeBasisPoints: attributes.seller_fee_basis_points,
       image: attributes.image,
@@ -737,7 +745,39 @@ const InfoStep = (props: {
               }
             />
           </label>
-          <label className="action-field direction-row">
+          <label className="action-field">
+            <span className="field-title">Collection Name</span>
+            <Input
+              className="input"
+              placeholder="Max 50 characters"
+              maxLength={50}
+              allowClear
+              value={props.attributes.collection_name}
+              onChange={info =>
+                props.setAttributes({
+                  ...props.attributes,
+                  collection_name: info.target.value,
+                })
+              }
+            />
+          </label>
+          <label className="action-field">
+            <span className="field-title">Collection Family</span>
+            <Input
+              className="input"
+              placeholder="Max 50 characters"
+              maxLength={50}
+              allowClear
+              value={props.attributes.collection_family}
+              onChange={info =>
+                props.setAttributes({
+                  ...props.attributes,
+                  collection_family: info.target.value,
+                })
+              }
+            />
+          </label>
+          {/* <label className="action-field direction-row">
             <Checkbox
               checked={isCollection}
               onChange={val => {
@@ -762,7 +802,7 @@ const InfoStep = (props: {
                 Select NFT
               </ArtSelector>
             </label>
-          )}
+          )} */}
           <label className="action-field">
             <span className="field-title">Description</span>
             <Input.TextArea
