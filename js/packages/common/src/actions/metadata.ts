@@ -84,10 +84,11 @@ export type Collection = {
 export interface IMetadataExtension {
   name: string;
   symbol: string;
-  collection: {
-    collection_name: string;
-    collection_family: string,
-  };
+  // collection: {
+  //   collection_name: string;
+  //   collection_family: string,
+  // };
+  collection: Collection;
   creators: Creator[] | null;
   description: string;
   // preview image absolute URI
