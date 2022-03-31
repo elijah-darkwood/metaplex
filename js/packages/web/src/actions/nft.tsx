@@ -284,12 +284,18 @@ export const mintNFT = async (
         sellerFeeBasisPoints: metadata.sellerFeeBasisPoints,
         creators: metadata.creators,
         collection: metadata.collection
-          ? new Collection({
-              key: new PublicKey(metadata.collection).toBase58(),
-              verified: false,
-            })
-          : null,
-        uses: metadata.uses || null,
+        ? new Collection({
+          name: metadata.collection_name,
+          family: metadata.collection_family,
+          })
+        : null,
+        // collection: metadata.collection
+        //   ? new Collection({
+        //       key: new PublicKey(metadata.collection).toBase58(),
+        //       verified: false,
+        //     })
+        //   : null,
+        // uses: metadata.uses || null,
       }),
       undefined,
       undefined,
