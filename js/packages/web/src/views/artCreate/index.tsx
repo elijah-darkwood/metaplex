@@ -80,8 +80,8 @@ export const ArtCreateView = () => {
     symbol: '',
     // collection: '',
     collection: {
-      collection_name: Collection.name,
-      collection_family: Collection.family,
+      collection_name: '',
+      collection_family: '',
     },
     description: '',
     external_url: '',
