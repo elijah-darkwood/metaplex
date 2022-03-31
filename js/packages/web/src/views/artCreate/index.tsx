@@ -737,7 +737,7 @@ const InfoStep = (props: {
               }
             />
           </label>
-          {/* <label className="action-field direction-row">
+          <label className="action-field direction-row">
             <Checkbox
               checked={isCollection}
               onChange={val => {
@@ -762,7 +762,7 @@ const InfoStep = (props: {
                 Select NFT
               </ArtSelector>
             </label>
-          )} */}
+          )}
           <label className="action-field">
             <span className="field-title">Description</span>
             <Input.TextArea
