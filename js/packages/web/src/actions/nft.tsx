@@ -195,16 +195,16 @@ export const mintNFT = async (
       uri: ' '.repeat(64), // size of url for arweave
       sellerFeeBasisPoints: metadata.sellerFeeBasisPoints,
       creators: metadata.creators,
-      // collection: {
-      //     name: metadata.collection_name,
-      //     family: metadata.collection_family,
-      // },
-      collection: metadata.collection
-        ? new Collection({
+      collection: {
           name: metadata.collection_name,
           family: metadata.collection_family,
-          })
-        : null,
+      },
+      // collection: metadata.collection
+      //   ? new Collection({
+      //     name: metadata.collection_name,
+      //     family: metadata.collection_family,
+      //     })
+      //   : null,
       // uses: metadata.uses || null,
     }),
     payerPublicKey,
@@ -283,12 +283,16 @@ export const mintNFT = async (
         uri: arweaveLink,
         sellerFeeBasisPoints: metadata.sellerFeeBasisPoints,
         creators: metadata.creators,
-        collection: metadata.collection
-        ? new Collection({
+        collection: {
           name: metadata.collection_name,
           family: metadata.collection_family,
-          })
-        : null,
+        },
+        // collection: metadata.collection
+        // ? new Collection({
+        //   name: metadata.collection_name,
+        //   family: metadata.collection_family,
+        //   })
+        // : null,
         // collection: metadata.collection
         //   ? new Collection({
         //       key: new PublicKey(metadata.collection).toBase58(),
