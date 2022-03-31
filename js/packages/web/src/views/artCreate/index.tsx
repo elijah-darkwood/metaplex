@@ -753,11 +753,14 @@ const InfoStep = (props: {
               placeholder="Max 50 characters"
               maxLength={50}
               allowClear
-              value={props.attributes.collection_name}
+              value={props.attributes.collection.collection_name}
               onChange={info =>
                 props.setAttributes({
                   ...props.attributes,
+                  collection: {
+                    ...props.attributes.collection,
                   collection_name: info.target.value,
+                  },
                 })
               }
             />
@@ -773,7 +776,10 @@ const InfoStep = (props: {
               onChange={info =>
                 props.setAttributes({
                   ...props.attributes,
-                  collection_family: info.target.value,
+                  collection: {
+                    ...props.attributes.collection,
+                    collection_family: info.target.value,
+                  },                  
                 })
               }
             />
