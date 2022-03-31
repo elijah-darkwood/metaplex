@@ -90,8 +90,8 @@ export const mintNFT = async (
     creators: Creator[] | null;
     sellerFeeBasisPoints: number;
     collection: any;
-    collection_name: any;
-    collection_family: any;
+    collection_name: string;
+    collection_family: string;
     uses?: Uses;
   },
   progressCallback: Dispatch<SetStateAction<number>>,

@@ -25,6 +25,7 @@ import {
   useConnection,
   IMetadataExtension,
   MetadataCategory,
+  Collection,
   useConnectionConfig,
   Creator,
   shortenAddress,
@@ -79,8 +80,8 @@ export const ArtCreateView = () => {
     symbol: '',
     // collection: '',
     collection: {
-      collection_name: '',
-      collection_family: '',
+      collection_name: Collection.name,
+      collection_family: Collection.family,
     },
     description: '',
     external_url: '',

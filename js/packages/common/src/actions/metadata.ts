@@ -77,6 +77,8 @@ export type Attribute = {
 export type Collection = {
   key: StringPublicKey;
   verified: number;
+  name: string;
+  family: string;
 };
 
 export interface IMetadataExtension {
