@@ -75,8 +75,8 @@ export type Attribute = {
 };
 
 export type Collection = {
-  name: string;
-  family: string;
+  name: any;
+  family: any;
   // key: StringPublicKey;
   // verified: number;
 };
