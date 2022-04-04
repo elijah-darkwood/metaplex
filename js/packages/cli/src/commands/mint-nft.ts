@@ -23,7 +23,7 @@ import log from 'loglevel';
 import {
   DataV2,
   Collection,
-  Uses,
+  // Uses,
   VerifyCollection,
   Creator,
   CreateMetadataV2,
@@ -35,7 +35,7 @@ export const createMetadata = async (
   metadataLink: string,
   verifyCreators: boolean,
   collection?: PublicKey,
-  uses?: Uses,
+  // uses?: Uses,
 ): Promise<DataV2 | undefined> => {
   // Metadata
   let metadata;
@@ -52,7 +52,7 @@ export const createMetadata = async (
     uri: metadataLink,
     verifyCreators,
     collection,
-    uses,
+    // uses,
   });
 };
 // Validate metadata
@@ -61,13 +61,13 @@ export const validateMetadata = ({
   uri,
   verifyCreators = true,
   collection,
-  uses,
+  // uses,
 }: {
   metadata: any;
   uri: string;
   verifyCreators?: boolean;
   collection?: PublicKey;
-  uses?: Uses;
+  // uses?: Uses;
 }): DataV2 | undefined => {
   if (
     !metadata.name ||
@@ -163,7 +163,7 @@ export const mintNFT = async (
   collection: PublicKey = null,
   maxSupply: number = 0,
   verifyCreators: boolean,
-  use: Uses = null,
+  // use: Uses = null,
   receivingWallet: PublicKey = null,
 ): Promise<MintResult | void> => {
   // Retrieve metadata

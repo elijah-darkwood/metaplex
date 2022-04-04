@@ -273,7 +273,7 @@ export class Metadata {
     this.isMutable = args.isMutable;
     this.editionNonce = args.editionNonce ?? null;
     this.collection = args.collection ?? null;
-    this.uses = args.uses ?? null;
+    // this.uses = args.uses ?? null;
   }
 
   public async init() {
