@@ -33,7 +33,7 @@ export const useCollections = () => {
     const usedCollections = new Set<string>(filterMints?.map(c => c.mint));
     const collections: CollectionView[] = [];
     auctions.forEach(auction => {
-      const collection = auction?.thumbnail?.metadata?.info?.collection?;
+      const collection = auction?.thumbnail?.metadata?.info?.collection;
       if (collection && !usedCollections.has(collection)) {
         const metadata = metadataByCollection[collection];
         if (metadata) {
