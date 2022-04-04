@@ -249,7 +249,7 @@ export class Metadata {
   isMutable: boolean;
   editionNonce: number | null;
   collection: Collection;
-  // uses: number | null;
+  uses: number | null;
 
   // set lazy
   masterEdition?: StringPublicKey;
@@ -263,7 +263,7 @@ export class Metadata {
     isMutable: boolean;
     editionNonce: number | null;
     collection: Collection;
-    // uses: number | null;
+    uses: number | null;
   }) {
     this.key = MetadataKey.MetadataV1;
     this.updateAuthority = args.updateAuthority;
@@ -273,7 +273,7 @@ export class Metadata {
     this.isMutable = args.isMutable;
     this.editionNonce = args.editionNonce ?? null;
     this.collection = args.collection ?? null;
-    // this.uses = args.uses ?? null;
+    this.uses = args.uses ?? null;
   }
 
   public async init() {

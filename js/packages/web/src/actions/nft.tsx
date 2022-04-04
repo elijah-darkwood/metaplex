@@ -92,7 +92,7 @@ export const mintNFT = async (
     collection: any;
     collection_name: any;
     collection_family: any;
-    // uses?: Uses;
+    uses?: Uses;
   },
   progressCallback: Dispatch<SetStateAction<number>>,
   maxSupply?: number,
@@ -126,7 +126,7 @@ export const mintNFT = async (
     // collection: metadata.collection
     //   ? new PublicKey(metadata.collection).toBase58()
     //   : null,
-    // use: metadata.uses ? metadata.uses : null,
+    use: metadata.uses ? metadata.uses : null,
   };
 
   const realFiles: File[] = [
@@ -205,7 +205,7 @@ export const mintNFT = async (
       //     family: metadata.collection_family,
       //     })
       //   : null,
-      // uses: metadata.uses || null,
+      uses: metadata.uses || null,
     }),
     payerPublicKey,
     mintKey,
@@ -299,7 +299,7 @@ export const mintNFT = async (
         //       verified: false,
         //     })
         //   : null,
-        // uses: metadata.uses || null,
+        uses: metadata.uses || null,
       }),
       undefined,
       undefined,
