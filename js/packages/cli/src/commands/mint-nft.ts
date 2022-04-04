@@ -350,7 +350,7 @@ export const updateMetadata = async (
     metadataLink,
     verifyCreators,
     collection,
-    uses,
+    // uses,
   );
   if (!data) return;
 
