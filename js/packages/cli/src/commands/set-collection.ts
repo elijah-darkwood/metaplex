@@ -110,7 +110,7 @@ export async function setCollection(
         }),
       ],
       collection: null,
-      uses: null,
+      // uses: null,
     });
 
     instructions.push(

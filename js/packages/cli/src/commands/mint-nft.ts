@@ -343,7 +343,7 @@ export const updateMetadata = async (
   metadataLink: string,
   collection: PublicKey = null,
   verifyCreators: boolean,
-  uses: Uses,
+  // uses: Uses,
 ): Promise<PublicKey | void> => {
   // Retrieve metadata
   const data = await createMetadata(
