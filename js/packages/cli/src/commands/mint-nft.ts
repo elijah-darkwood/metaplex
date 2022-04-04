@@ -103,10 +103,11 @@ export const validateMetadata = ({
     uri,
     sellerFeeBasisPoints: metadata.seller_fee_basis_points,
     creators: creators,
-    collection: collection
-      ? new Collection({ key: collection.toBase58(), verified: false })
-      : null,
-    uses,
+    collection: metadata.collection,
+    // collection: collection
+    //   ? new Collection({ key: collection.toBase58(), verified: false })
+    //   : null,
+    // uses,
   });
 };
 
