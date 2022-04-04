@@ -152,22 +152,22 @@ programCommand('update-metadata')
     const mintKey = new PublicKey(mint);
     const solConnection = new web3.Connection(getCluster(env));
     const walletKeyPair = loadWalletKey(keypair);
-    // let structuredUseMethod;
-    // try {
-    //   structuredUseMethod = parseUses(useMethod, totalUses);
-    //   if (structuredUseMethod) {
-    //     const info = await solConnection.getAccountInfo(mintKey);
-    //     const meta = MetadataData.deserialize(info.data);
-    //     if (meta?.uses && meta.uses.total > meta.uses.remaining) {
-    //       log.error(
-    //         'FAILED: This call will fail if you have used the NFT, you cannot change USES after using.',
-    //       );
-    //       return;
-    //     }
-    //   }
-    // } catch (e) {
-    //   log.error(e);
-    // }
+    let structuredUseMethod;
+    try {
+      structuredUseMethod = parseUses(useMethod, totalUses);
+      if (structuredUseMethod) {
+        const info = await solConnection.getAccountInfo(mintKey);
+        const meta = MetadataData.deserialize(info.data);
+        if (meta?.uses && meta.uses.total > meta.uses.remaining) {
+          log.error(
+            'FAILED: This call will fail if you have used the NFT, you cannot change USES after using.',
+          );
+          return;
+        }
+      }
+    } catch (e) {
+      log.error(e);
+    }
     let collectionKey;
     if (collection) {
       collectionKey = new PublicKey(collection);
@@ -179,7 +179,7 @@ programCommand('update-metadata')
       url,
       collectionKey,
       verifyCreators,
-      // structuredUseMethod,
+      structuredUseMethod,
     );
   });
 
