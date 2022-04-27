@@ -737,7 +737,7 @@ const InfoStep = (props: {
               }
             />
           </label>
-          {/* <label className="action-field direction-row">
+          <label className="action-field direction-row">
             <Checkbox
               checked={isCollection}
               onChange={val => {
@@ -745,7 +745,7 @@ const InfoStep = (props: {
               }}
             />
             <span className="field-title" style={{ marginLeft: '10px' }}>
-              Is parent collection?
+              Collection NFT
             </span>
           </label>
           {!isCollection && (
@@ -759,10 +759,10 @@ const InfoStep = (props: {
                 }}
                 allowMultiple={false}
               >
-                Select NFT
+                Select Collection NFT
               </ArtSelector>
             </label>
-          )} */}
+          )}
           <label className="action-field">
             <span className="field-title">Description</span>
             <Input.TextArea
@@ -810,7 +810,7 @@ const InfoStep = (props: {
                   {fields.map(({ key, name }) => (
                     <Space key={key} align="baseline">
                       <Form.Item name={[name, 'trait_type']} hasFeedback>
-                        <Input placeholder="Trait Name (Optional)" />
+                        <Input placeholder="Trait Name" />
                       </Form.Item>
                       <Form.Item
                         name={[name, 'value']}
@@ -819,9 +819,9 @@ const InfoStep = (props: {
                       >
                         <Input placeholder="Value" />
                       </Form.Item>
-                      <Form.Item name={[name, 'display_type']} hasFeedback>
+                      {/* <Form.Item name={[name, 'display_type']} hasFeedback>
                         <Input placeholder="display_type (Optional)" />
-                      </Form.Item>
+                      </Form.Item> */}
                       <MinusCircleOutlined onClick={() => remove(name)} />
                     </Space>
                   ))}
