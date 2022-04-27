@@ -16,6 +16,9 @@ import {
   CANDY_MACHINE_PROGRAM,
   getCandyMachineState,
   mintOneToken,
+  getCollectionPDA,
+  SetupState,
+  createAccountsForMint,
 } from './candy-machine';
 import { AlertState, toDate, formatNumber, getAtaForMint } from './utils';
 import { MintCountdown } from './MintCountdown';
@@ -51,12 +54,15 @@ const Home = (props: HomeProps) => {
     message: '',
     severity: undefined,
   });
+
   const [isActive, setIsActive] = useState(false);
   const [endDate, setEndDate] = useState<Date>();
   const [itemsRemaining, setItemsRemaining] = useState<number>();
   const [isWhitelistUser, setIsWhitelistUser] = useState(false);
   const [isPresale, setIsPresale] = useState(false);
   const [discountPrice, setDiscountPrice] = useState<anchor.BN>();
+  const [needTxnSplit, setNeedTxnSplit] = useState(true);
+  const [setupTxn, setSetupTxn] = useState<SetupState>();
 
   const rpcUrl = props.rpcHost;
   const wallet = useWallet();
@@ -168,15 +174,60 @@ const Home = (props: HomeProps) => {
           active = false;
         }
 
+        const [collectionPDA] = await getCollectionPDA(props.candyMachineId);
+        const collectionPDAAccount =
+          await cndy.program.provider.connection.getAccountInfo(collectionPDA);
+
         setIsActive((cndy.state.isActive = active));
         setIsPresale((cndy.state.isPresale = presale));
         setCandyMachine(cndy);
+
+        const txnEstimate =
+          892 +
+          (!!collectionPDAAccount && cndy.state.retainAuthority ? 182 : 0) +
+          (cndy.state.tokenMint ? 177 : 0) +
+          (cndy.state.whitelistMintSettings ? 33 : 0) +
+          (cndy.state.whitelistMintSettings?.mode?.burnEveryTime ? 145 : 0) +
+          (cndy.state.gatekeeper ? 33 : 0) +
+          (cndy.state.gatekeeper?.expireOnUse ? 66 : 0);
+
+        setNeedTxnSplit(txnEstimate > 1230);
       } catch (e) {
-        console.log('There was a problem fetching Candy Machine state');
+        if (e instanceof Error) {
+          if (e.message === `Account does not exist ${props.candyMachineId}`) {
+            setAlertState({
+              open: true,
+              message: `Couldn't fetch candy machine state from candy machine with address: ${props.candyMachineId}, using rpc: ${props.rpcHost}! You probably typed the REACT_APP_CANDY_MACHINE_ID value in wrong in your .env file, or you are using the wrong RPC!`,
+              severity: 'error',
+              noHide: true,
+            });
+          } else if (e.message.startsWith('failed to get info about account')) {
+            setAlertState({
+              open: true,
+              message: `Couldn't fetch candy machine state with rpc: ${props.rpcHost}! This probably means you have an issue with the REACT_APP_SOLANA_RPC_HOST value in your .env file, or you are not using a custom RPC!`,
+              severity: 'error',
+              noHide: true,
+            });
+          }
+        } else {
+          setAlertState({
+            open: true,
+            message: `${e}`,
+            severity: 'error',
+            noHide: true,
+          });
+        }
         console.log(e);
       }
+    } else {
+      setAlertState({
+        open: true,
+        message: `Your REACT_APP_CANDY_MACHINE_ID value in the .env file doesn't look right! Make sure you enter it in as plain base-58 address!`,
+        severity: 'error',
+        noHide: true,
+      });
     }
-  }, [anchorWallet, props.candyMachineId, props.connection]);
+  }, [anchorWallet, props.candyMachineId, props.connection, props.rpcHost]);
 
   const onMint = async (
     beforeTransactions: Transaction[] = [],
@@ -186,13 +237,58 @@ const Home = (props: HomeProps) => {
       setIsUserMinting(true);
       document.getElementById('#identity')?.click();
       if (wallet.connected && candyMachine?.program && wallet.publicKey) {
+        let setupMint: SetupState | undefined;
+        if (needTxnSplit && setupTxn === undefined) {
+          setAlertState({
+            open: true,
+            message: 'Please sign account setup transaction',
+            severity: 'info',
+          });
+          setupMint = await createAccountsForMint(
+            candyMachine,
+            wallet.publicKey,
+          );
+          let status: any = { err: true };
+          if (setupMint.transaction) {
+            status = await awaitTransactionSignatureConfirmation(
+              setupMint.transaction,
+              props.txTimeout,
+              props.connection,
+              true,
+            );
+          }
+          if (status && !status.err) {
+            setSetupTxn(setupMint);
+            setAlertState({
+              open: true,
+              message:
+                'Setup transaction succeeded! Please sign minting transaction',
+              severity: 'info',
+            });
+          } else {
+            setAlertState({
+              open: true,
+              message: 'Mint failed! Please try again!',
+              severity: 'error',
+            });
+            setIsUserMinting(false);
+            return;
+          }
+        } else {
+          setAlertState({
+            open: true,
+            message: 'Please sign minting transaction',
+            severity: 'info',
+          });
+        }
+
         let mintOne = await mintOneToken(
           candyMachine,
           wallet.publicKey,
           beforeTransactions,
           afterTransactions,
+          setupMint ?? setupTxn,
         );
-
         const mintTxId = mintOne[0];
 
         let status: any = { err: true };
@@ -212,6 +308,7 @@ const Home = (props: HomeProps) => {
           setItemsRemaining(remaining);
           setIsActive((candyMachine.state.isActive = remaining > 0));
           candyMachine.state.isSoldOut = remaining === 0;
+          setSetupTxn(undefined);
           setAlertState({
             open: true,
             message: 'Congratulations! Mint succeeded!',
@@ -229,7 +326,7 @@ const Home = (props: HomeProps) => {
       let message = error.msg || 'Minting failed! Please try again!';
       if (!error.msg) {
         if (!error.message) {
-          message = 'Transaction Timeout! Please try again.';
+          message = 'Transaction timeout! Please try again.';
         } else if (error.message.indexOf('0x137')) {
           console.log(error);
           message = `SOLD OUT!`;
@@ -251,7 +348,7 @@ const Home = (props: HomeProps) => {
         message,
         severity: 'error',
       });
-      // updates the candy machine state to reflect the lastest
+      // updates the candy machine state to reflect the latest
       // information on chain
       refreshCandyMachineState();
     } finally {
@@ -511,7 +608,7 @@ const Home = (props: HomeProps) => {
 
       <Snackbar
         open={alertState.open}
-        autoHideDuration={6000}
+        autoHideDuration={alertState.noHide ? null : 6000}
         onClose={() => setAlertState({ ...alertState, open: false })}
       >
         <Alert
